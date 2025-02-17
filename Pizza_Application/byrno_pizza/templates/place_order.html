@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Place Order{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card p-4 shadow-lg custom-bg w-50">
+        <h2 class="text-center text-white">Your payment details:</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="{{ form.name.id_for_label }}" class="form-label text-white">Name</label>
+                <input type="text" class="form-control bg-transparent text-white border-light" id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" value="{{ form.name.value|default_if_none:'' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.address.id_for_label }}" class="form-label text-white">Address</label>
+                <textarea class="form-control bg-transparent text-white border-light" id="{{ form.address.id_for_label }}" name="{{ form.address.html_name }}" rows="3" required>{{ form.address.value|default_if_none:'' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.card_number.id_for_label }}" class="form-label text-white">Card Number</label>
+                <input type="text" class="form-control bg-transparent text-white border-light" id="{{ form.card_number.id_for_label }}" name="{{ form.card_number.html_name }}" value="{{ form.card_number.value|default_if_none:'' }}" maxlength="16" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.card_expiration_date.id_for_label }}" class="form-label text-white">Expiration Date (MM/YY)</label>
+                    <input type="text" class="form-control bg-transparent text-white border-light" id="{{ form.card_expiration_date.id_for_label }}" name="{{ form.card_expiration_date.html_name }}" value="{{ form.card_expiration_date.value|default_if_none:'' }}" maxlength="5" placeholder="MM/YY" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.card_cvv.id_for_label }}" class="form-label text-white">CVV</label>
+                    <input type="text" class="form-control bg-transparent text-white border-light" id="{{ form.card_cvv.id_for_label }}" name="{{ form.card_cvv.html_name }}" value="{{ form.card_cvv.value|default_if_none:'' }}" maxlength="3" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100">Place Order</button>
+        </form>
+
+        {% if form.errors %}
+            <div class="alert alert-danger mt-3">
+                <strong>Errors:</strong>
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li><strong class="text-white">{{ field }}</strong>: {{ errors|join:", " }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

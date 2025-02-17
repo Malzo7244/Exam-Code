@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <h2 class="display-3 font-weight-bold" style="text-shadow: 2px 2px 4px #000000; font-size: 4rem;">Welcome {{ user.username }}, to Byrno's Pizza!</h2>
+            <p class="lead font-weight-bold" style="font-size: 1.5rem; text-shadow: 1px 1px 3px #000000;">We're happy to see you again. Below are your previous orders:</p>
+        </div>
+
+        <div class="col-md-4 text-center">
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="img-fluid" style="max-width: 400px;">
+        </div>
+    </div>
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'create_pizza' %}" class="btn btn-light btn-lg">Order a New Pizza</a>
+    </div>
+
+    <h3 class="font-weight-bold" style="font-size: 2.25rem; text-shadow: 2px 2px 4px #000000;">Your Previous Orders:</h3>
+    <ul class="list-group">
+        {% for order in orders %}
+            <li class="list-group-item">
+                {{ order.pizza.get_size_display }} {{ order.pizza.get_cheese_display }} Pizza with a {{ order.pizza.get_crust_display }} Crust and {{ order.pizza.get_sauce_display }} Sauce, topped with 
+                {% if order.pizza.pepperoni %}
+                    Pepperoni{% if order.pizza.chicken or order.pizza.ham or order.pizza.pineapple or order.pizza.peppers or order.pizza.mushrooms or order.pizza.onions %}, {% endif %}
+                {% endif %}
+                {% if order.pizza.chicken %}
+                    Chicken{% if order.pizza.ham or order.pizza.pineapple or order.pizza.peppers or order.pizza.mushrooms or order.pizza.onions %}, {% endif %}
+                {% endif %}
+                {% if order.pizza.ham %}
+                    Ham{% if order.pizza.pineapple or order.pizza.peppers or order.pizza.mushrooms or order.pizza.onions %}, {% endif %}
+                {% endif %}
+                {% if order.pizza.pineapple %}
+                    Pineapple{% if order.pizza.peppers or order.pizza.mushrooms or order.pizza.onions %}, {% endif %}
+                {% endif %}
+                {% if order.pizza.peppers %}
+                    Peppers{% if order.pizza.mushrooms or order.pizza.onions %}, {% endif %}
+                {% endif %}
+                {% if order.pizza.mushrooms %}
+                    Mushrooms{% if order.pizza.onions %}, {% endif %}
+                {% endif %}
+                {% if order.pizza.onions %}
+                    Onions
+                {% endif %}.
+            </li>
+        {% empty %}
+            <p>No previous orders found.</p>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
